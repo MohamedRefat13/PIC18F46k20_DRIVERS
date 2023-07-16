@@ -11,26 +11,28 @@
 #include "MCAL/GPIO/GPIO.h"
 #include "ECU/LED/LED_Interface.h"
 #include "ECU/RELAY/RELAY_Interface.h"
+#include "ECU/DCMOTOR/DCMOTOR_Interface.h"
 #include "Application.h"
 #include <xc.h>
 #define _XTAL_FREQ 8000000L 
 
 
 
+Std_ReturnType Error_State = E_OK ; 
 int main()
 {
-    Relay_t Relay_1 = { GPIO_PORTD , GPIO_PIN0 , RELAY_OFF};
-    Relay_t Relay_2 = { GPIO_PORTD , GPIO_PIN1 , RELAY_OFF};
-    RELAY_Init(&Relay_1);
-    RELAY_Init(&Relay_2);
-   while(1){
-        RELAY_TurnOn(&Relay_1);
-        RELAY_TurnOff(&Relay_2);
-        __delay_ms(1000);
-        RELAY_TurnOff(&Relay_1);
-        RELAY_TurnOn(&Relay_2);
-        __delay_ms(1000);
+     DC_MOTOR_t Motor1 = { GPIO_PORTA , GPIO_PIN0 ,GPIO_PIN1 };
+     Error_State = DC_MOTOR_INIT(&Motor1);
+     while(1){
+          Error_State = E_OK;
+          Error_State = DC_MOTOR_ON_CW(&Motor1);
+          __delay_ms(1000);
+          Error_State = DC_MOTOR_OFF(&Motor1);
+          __delay_ms(1000);
        
-   }
-   return (EXIT_SUCCESS);
+          Error_State = DC_MOTOR_ON_CCW(&Motor1);
+          __delay_ms(1000);
+
+     }
+     return (EXIT_SUCCESS);
 }
