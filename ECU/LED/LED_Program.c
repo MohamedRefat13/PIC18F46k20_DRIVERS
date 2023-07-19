@@ -4,8 +4,7 @@ Std_ReturnType LED_Init(LED_t *pLedConfigration)
 {
     Std_ReturnType return_ErrorState = E_OK;
     if(pLedConfigration != NULL_ptr){
-        Pin_Config_t Led = { pLedConfigration->PortNumber , pLedConfigration->PinNumber , GPIO_OUTPUT , GPIO_LOW};
-        return_ErrorState = GPIO_PinInitialize(&Led);
+        return_ErrorState = GPIO_SetPinDirection(pLedConfigration->PortNumber , pLedConfigration->PinNumber , GPIO_OUTPUT);
     }else{
         return_ErrorState = E_NOT_OK;
     }
@@ -19,12 +18,10 @@ Std_ReturnType LED_ON(LED_t *pLedConfigration)
     if(pLedConfigration != NULL_ptr){
         if(LED_ACTIVE_HIGH ==pLedConfigration->Active_Status)
         {
-            Pin_Config_t Led = {pLedConfigration->PortNumber , pLedConfigration->PinNumber , GPIO_OUTPUT , GPIO_HIGH}; 
-            return_ErrorState = GPIO_SetPinValue(&Led ,  GPIO_HIGH); 
+            return_ErrorState = GPIO_SetPinValue(pLedConfigration->PortNumber , pLedConfigration->PinNumber , GPIO_HIGH); 
         }else if(LED_ACTIVE_LOW ==pLedConfigration->Active_Status)
         {
-            Pin_Config_t Led = {pLedConfigration->PortNumber , pLedConfigration->PinNumber , GPIO_OUTPUT , GPIO_LOW}; 
-            return_ErrorState = GPIO_SetPinValue(&Led ,  GPIO_LOW); 
+            return_ErrorState = GPIO_SetPinValue(pLedConfigration->PortNumber , pLedConfigration->PinNumber , GPIO_LOW); 
         } 
        
     }else{
@@ -41,12 +38,10 @@ Std_ReturnType LED_OFF(LED_t *pLedConfigration)
     if(pLedConfigration != NULL_ptr){
         if(LED_ACTIVE_HIGH ==pLedConfigration->Active_Status)
         {
-           Pin_Config_t Led = {pLedConfigration->PortNumber , pLedConfigration->PinNumber , GPIO_OUTPUT , GPIO_LOW}; 
-           return_ErrorState = GPIO_SetPinValue(&Led ,  GPIO_LOW); 
+           return_ErrorState = GPIO_SetPinValue(pLedConfigration->PortNumber , pLedConfigration->PinNumber , GPIO_LOW); 
         }else if(LED_ACTIVE_LOW ==pLedConfigration->Active_Status)
         {
-           Pin_Config_t Led = {pLedConfigration->PortNumber , pLedConfigration->PinNumber , GPIO_OUTPUT ,  GPIO_HIGH}; 
-           return_ErrorState = GPIO_SetPinValue(&Led ,  GPIO_HIGH); 
+           return_ErrorState = GPIO_SetPinValue(pLedConfigration->PortNumber , pLedConfigration->PinNumber , GPIO_HIGH); 
         }
        
     }else{
@@ -60,8 +55,7 @@ Std_ReturnType LED_Toggle(LED_t *pLedConfigration)
 {   Std_ReturnType return_ErrorState = E_OK;
 
     if(pLedConfigration != NULL_ptr){
-        Pin_Config_t Led = {pLedConfigration->PortNumber , pLedConfigration->PinNumber , GPIO_OUTPUT , GPIO_HIGH };
-        return_ErrorState = GPIO_TogglePinValue(&Led);
+        return_ErrorState = GPIO_TogglePinValue(pLedConfigration->PortNumber , pLedConfigration->PinNumber);
        
     }else{
         return_ErrorState = E_NOT_OK;

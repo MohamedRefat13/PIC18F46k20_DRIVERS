@@ -7,13 +7,12 @@
 
 #include"../../MCAL/GPIO/GPIO.h"
 #include"SWITCH_Interface.h"
-
+#define _XTAL_FREQ 8000000L 
 
 Std_ReturnType SWITCH_Init(SWITCH_t *Switch_Config )
 {
     Std_ReturnType return_ErrorState = E_OK ;   
-    Pin_Config_t Switch_Pin = { Switch_Config->SW_PortNum , Switch_Config->SW_PinNum , GPIO_INPUT , GPIO_LOW}; 
-    return_ErrorState  = GPIO_PinInitialize(&Switch_Pin);
+    return_ErrorState  = GPIO_SetPinDirection(Switch_Config->SW_PortNum , Switch_Config->SW_PinNum , GPIO_INPUT );
     return return_ErrorState;
 }
 
@@ -22,8 +21,7 @@ Std_ReturnType SWITCH_GetPressed(SWITCH_t *Switch_Config , SWITCH_STATE_t *pPres
     Std_ReturnType return_ErrorState = E_OK ; 
     
     uint8_t loc_PinVal = GPIO_HIGH;
-    Pin_Config_t Switch_Pin = { Switch_Config->SW_PortNum , Switch_Config->SW_PinNum , GPIO_INPUT , GPIO_LOW}; 
-    return_ErrorState  = GPIO_GetPinValue(&Switch_Pin , &loc_PinVal);
+    return_ErrorState  = GPIO_GetPinValue(Switch_Config->SW_PortNum , Switch_Config->SW_PinNum , &loc_PinVal);
 
     if(Switch_Config->SW_State == SW_PULL_UP)
     {
@@ -33,8 +31,8 @@ Std_ReturnType SWITCH_GetPressed(SWITCH_t *Switch_Config , SWITCH_STATE_t *pPres
 
         }else if (loc_PinVal == GPIO_LOW)
         {
-    
-        	return_ErrorState  = GPIO_GetPinValue(&Switch_Pin, &loc_PinVal);
+            __delay_ms(30);
+        	return_ErrorState  = GPIO_GetPinValue(Switch_Config->SW_PortNum , Switch_Config->SW_PinNum , &loc_PinVal);
         	if (loc_PinVal == GPIO_LOW)
         	{
         		*pPressedValue = SW_PRESSED ;

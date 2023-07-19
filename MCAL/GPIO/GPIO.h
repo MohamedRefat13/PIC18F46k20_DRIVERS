@@ -72,28 +72,16 @@ typedef enum
 
 }LogicState;
 
-typedef struct 
-{
-    uint8_t PortNum      :3;
-    uint8_t PinNum       :3; 
-    uint8_t PinDirection :1;   
-    uint8_t PinLogic     :1;
 
-}Pin_Config_t;
 
 /* Section : Functions Delcarations */
-/**
- * @brief :
- * 
- * @param pConfig 
- * @return Std_ReturnType 
- */
-Std_ReturnType GPIO_SetPinDirection(const Pin_Config_t *pConfig                       );
-Std_ReturnType GPIO_GetPinDirection(const Pin_Config_t *pConfig , uint8_t *pDirection );
-Std_ReturnType GPIO_SetPinValue    (const Pin_Config_t *pConfig , uint8_t Copy_Logic  );
-Std_ReturnType GPIO_GetPinValue    (const Pin_Config_t *pConfig , uint8_t *pLogic     );
-Std_ReturnType GPIO_TogglePinValue (const Pin_Config_t *pConfig                       );
-Std_ReturnType GPIO_PinInitialize  (const Pin_Config_t *pConfig                       );
+
+Std_ReturnType GPIO_SetPinDirection(GPIO_PORT_NUM PortNumber , GPIO_PIN_NUM PinNumber , uint8_t Direction   );
+Std_ReturnType GPIO_GetPinDirection(GPIO_PORT_NUM PortNumber , GPIO_PIN_NUM PinNumber , uint8_t *pDirection );
+Std_ReturnType GPIO_SetPinValue    (GPIO_PORT_NUM PortNumber , GPIO_PIN_NUM PinNumber , uint8_t Copy_Logic  );
+Std_ReturnType GPIO_GetPinValue    (GPIO_PORT_NUM PortNumber , GPIO_PIN_NUM PinNumber , uint8_t *pLogic     );
+Std_ReturnType GPIO_TogglePinValue (GPIO_PORT_NUM PortNumber , GPIO_PIN_NUM PinNumber);
+//Std_ReturnType GPIO_PinInitialize  (const Pin_Config_t *pConfig                       );
 
 
 Std_ReturnType GPIO_SetPortDirection(const GPIO_PORT_NUM Copy_PortNum , uint8_t Copy_Direction );
@@ -101,6 +89,14 @@ Std_ReturnType GPIO_GetPortDirection(const GPIO_PORT_NUM Copy_PortNum , uint8_t 
 Std_ReturnType GPIO_SetPortValue    (const GPIO_PORT_NUM Copy_PortNum , uint8_t Copy_Logic     );
 Std_ReturnType GPIO_GetPortValue    (const GPIO_PORT_NUM Copy_PortNum , uint8_t *pLogic        );
 Std_ReturnType GPIO_TogglePortValue (const GPIO_PORT_NUM Copy_PortNum                          );
+
+
+
+Std_ReturnType GPIO_SetLowNibbleValue(const GPIO_PORT_NUM Copy_PortNum , uint8_t Value);
+Std_ReturnType GPIO_SetHighNibbleValue(const GPIO_PORT_NUM Copy_PortNum , uint8_t Value);
+Std_ReturnType GPIO_SetLowNibbleDirection(const GPIO_PORT_NUM Copy_PortNum , uint8_t Direction);
+Std_ReturnType GPIO_SetHighNibbleDirection(const GPIO_PORT_NUM Copy_PortNum , uint8_t Direction);
+
 
 #endif	/* GPIO_H */
  
